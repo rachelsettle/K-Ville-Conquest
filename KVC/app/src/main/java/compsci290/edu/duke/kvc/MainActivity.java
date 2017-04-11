@@ -8,9 +8,25 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_before_login);
+    }
+
+    public void onRegistrationClick(View button){
+        Intent regisIntent = new Intent(MainActivity.this, RegistrationActivity.class);
+        startActivity(regisIntent);
+    }
+
+    public void onLoginClick(View button){
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
+    /*
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_after_login);
     }
 
 
@@ -22,5 +38,5 @@ public class MainActivity extends AppCompatActivity {
     public void onHighScoreClick(View button){
 
     }
-
+    */
 }
