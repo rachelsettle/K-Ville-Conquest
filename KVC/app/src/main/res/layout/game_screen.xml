@@ -4,11 +4,11 @@
     android:layout_height="match_parent">
 
 
-
     <ImageView
+        android:id="@+id/charImage"
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="150dp" />
 
 </LinearLayout>

@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Intent gameStartIntent = new Intent(MainActivity.this, CharacterSelectScreen.class);
         startActivity(gameStartIntent);
     }
+
+    public void onHighScoreClick(View button){
+
+    }
+
 }
