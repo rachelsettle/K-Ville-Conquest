@@ -7,10 +7,12 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean mLoggedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_before_login);
+        setContentView(R.layout.activity_main);
     }
 
     public void onRegistrationClick(View button){
