@@ -37,7 +37,8 @@ public class RegistrationActivity extends AppCompatActivity {
         //process messages
         final ProgressDialog progressDialog = ProgressDialog.show(RegistrationActivity.this, "Please wait...", "Processing...", true);
         //make a new user with the email and password inputs
-        (firebaseAuth.createUserWithEmailAndPassword(mEmailInput.getText().toString(), mPasswordInput.getText().toString()))
+
+        (firebaseAuth.createUserWithEmailAndPassword(mEmailInput.getText().toString().trim(), mPasswordInput.getText().toString()))
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

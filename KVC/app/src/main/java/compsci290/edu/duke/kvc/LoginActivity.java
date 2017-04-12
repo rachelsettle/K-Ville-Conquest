@@ -34,16 +34,18 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginConfirm (View button){
         final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Please wait...", "Processing...", true);
 
-        (firebaseAuth.signInWithEmailAndPassword(mEmailInput.getText().toString(), mEmailInput.getText().toString()))
+        (firebaseAuth.signInWithEmailAndPassword(mEmailInput.getText().toString().trim(), mPasswordInput.getText().toString()))
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+
                         if (task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
 
                             //go to profile
                             Intent i = new Intent(LoginActivity.this, Profile.class);
-                            i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
+                            i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail().toString());
                             startActivity(i);
                         }
 
