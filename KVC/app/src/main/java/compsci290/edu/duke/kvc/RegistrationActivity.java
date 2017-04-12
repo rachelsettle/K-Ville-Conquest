@@ -37,30 +37,35 @@ public class RegistrationActivity extends AppCompatActivity {
         //process messages
         final ProgressDialog progressDialog = ProgressDialog.show(RegistrationActivity.this, "Please wait...", "Processing...", true);
         //make a new user with the email and password inputs
+        //do nothing if one or both fields is empty
 
-        (firebaseAuth.createUserWithEmailAndPassword(mEmailInput.getText().toString().trim(), mPasswordInput.getText().toString()))
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+        if (mEmailInput.getText().toString().length() > 0 && mPasswordInput.getText().toString().length() > 0) {
+            (firebaseAuth.createUserWithEmailAndPassword(mEmailInput.getText().toString().trim(), mPasswordInput.getText().toString()))
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
 
-                        if (task.isSuccessful()){
-                            Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
 
-                            //go to login activity
-                            Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
-                            startActivity(i);
+                                //go to login activity
+                                Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
+                                startActivity(i);
+                            } else {
+                                //Log exception
+                                Log.d("ERROR", task.getException().toString());
+                                Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
                         }
+                    });
+        }
 
-                        else {
-                            //Log exception
-                            Log.d("ERROR", task.getException().toString());
-                            Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-
+        else{
+            progressDialog.dismiss();
+            Toast.makeText(RegistrationActivity.this, "Please enter something in for both fields", Toast.LENGTH_LONG).show();
+        }
     }
 
 
