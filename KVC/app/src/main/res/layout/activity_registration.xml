@@ -86,5 +86,6 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="105dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:onClick="onConfirmRegister"/>
 </android.support.constraint.ConstraintLayout>

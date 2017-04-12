@@ -19,7 +19,8 @@
         <activity android:name=".CharacterSelectScreen" />
         <activity android:name=".GameScreen" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity"></activity>
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".Profile"></activity>
     </application>
 
 </manifest>

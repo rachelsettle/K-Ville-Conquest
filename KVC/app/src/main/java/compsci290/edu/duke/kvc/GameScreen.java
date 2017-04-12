@@ -33,5 +33,4 @@ public class GameScreen extends Activity {
         //windowHeight = get
     }
 
-
 }
