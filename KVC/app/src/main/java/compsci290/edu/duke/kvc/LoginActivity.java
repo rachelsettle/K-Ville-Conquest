@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             //go to profile
                             Intent i = new Intent(LoginActivity.this, Profile.class);
+                            i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
                             startActivity(i);
                         }
 
