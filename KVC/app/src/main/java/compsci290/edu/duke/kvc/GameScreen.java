@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Random;
 
 /**
@@ -20,6 +22,7 @@ public class GameScreen extends Activity {
     private int mCharacterID;
     private int mScore;
     private ImageView mCharacterImage;
+    private FirebaseAuth firebaseAuth;
 
     private int windowWidth;
     private int windowHeight;
@@ -29,12 +32,14 @@ public class GameScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
+        firebaseAuth = FirebaseAuth.getInstance();
         mCharacterImage = (ImageView) this.findViewById(R.id.charImage);
         mCharacterID = getIntent().getExtras().getInt("charID");
         mCharacterImage.setImageResource(mCharacterID);
+        int randomScore = giveScore();
 
-        //windowWidth = getWindowManager().getDefaultDisplay().getWidth();
-        //windowHeight = get
+        //write user_ID, character, and score to database
+
     }
 
     //spit out a random score for sake of database testing
