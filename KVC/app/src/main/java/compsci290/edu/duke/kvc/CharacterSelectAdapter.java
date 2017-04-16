@@ -43,16 +43,11 @@ public class CharacterSelectAdapter extends ArrayAdapter<String>{
         LayoutInflater inflater = mContext.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.character_select_for_listview, null, true);
 
-        ImageView rowImage = (ImageView) rowView.findViewById(R.id.charIcon);
-        TextView rowButton = (TextView) rowView.findViewById(R.id.charName);
+        ImageView charIcon = (ImageView) rowView.findViewById(R.id.charIcon);
+        TextView charName = (TextView) rowView.findViewById(R.id.charName);
 
-        rowImage.setImageResource(mIDs[position]);
-
-        //chop ending off
-        String fullName = mNames[position];
-        int endingIndex = fullName.indexOf("_character");
-        fullName = fullName.substring(0, endingIndex);
-        rowButton.setText(fullName);
+        charIcon.setImageResource(mIDs[position]);
+        charName.setText(mNames[position]);
 
         return rowView;
     }

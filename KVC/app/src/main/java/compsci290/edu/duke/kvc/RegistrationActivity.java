@@ -19,6 +19,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private EditText mEmailInput;
     private EditText mPasswordInput;
+    private EditText mFirstNameInput;
+    private EditText mLastNameInput;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -29,6 +31,8 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         mEmailInput = (EditText) this.findViewById(R.id.emailInputRegistration);
         mPasswordInput = (EditText) this.findViewById(R.id.passwordInputRegistration);
+        mFirstNameInput = (EditText) this.findViewById(R.id.firstNameInput);
+        mLastNameInput = (EditText) this.findViewById(R.id.lastNameInput);
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -47,6 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             if (task.isSuccessful()) {
+
                                 Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
 
                                 //go to login activity

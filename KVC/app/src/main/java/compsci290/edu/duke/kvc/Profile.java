@@ -3,6 +3,8 @@ package compsci290.edu.duke.kvc;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,9 +31,14 @@ public class Profile extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void onSignOutClick(View Button){
+    public void onSignOutClick(View button){
         SharedPref.write("LoggedInStatus", false);
         Intent i = new Intent(Profile.this, MainActivity.class);
+        startActivity(i);
+    }
+
+    public void onHighScoreClick(View button){
+        Intent i = new Intent(Profile.this, LocalHighScores.class);
         startActivity(i);
     }
 }

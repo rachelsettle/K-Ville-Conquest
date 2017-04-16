@@ -11,9 +11,7 @@ import android.widget.ListView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.jar.Attributes;
 
 /*
  * Created by Bao on 4/8/2017.
@@ -47,8 +45,9 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
 
     private ListView mCharacterChoices;
     private ArrayList<NameIDPair> mListOfChars;
-    private String[] mCharacterNames;
-    private int[] mCharacterIDs;
+
+    public static String[] sCharacterNames;
+    public static int[] sCharacterIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -64,27 +63,32 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
         mListOfChars = getmCharacters(c);
 
         for (NameIDPair pair : mListOfChars){
-            Log.d("pairResult", "imageName: " + pair.getmImageName() +
-                    " pairID: " + pair.getmImageID());
-            dummyArrayList1.add(pair.getmImageName());
+            String imageName = pair.getmImageName();
+            //trim the _character part at the end of character names
+            if (pair.getmImageName() != null){
+                int endingIndex = imageName.indexOf("_character");
+                imageName = imageName.substring(0, endingIndex);
+            }
+
+            dummyArrayList1.add(imageName);
             dummyArrayList2.add(pair.getmImageID());
         }
 
-        mCharacterNames = new String[dummyArrayList1.size()];
-        mCharacterNames = dummyArrayList1.toArray(mCharacterNames);
-        mCharacterIDs = new int[dummyArrayList1.size()];
+        sCharacterNames = new String[dummyArrayList1.size()];
+        sCharacterNames = dummyArrayList1.toArray(sCharacterNames);
+        sCharacterIDs = new int[dummyArrayList1.size()];
 
-        for (int i=0; i < mCharacterIDs.length; i++){
-            mCharacterIDs[i] = dummyArrayList2.get(i).intValue();
+        for (int i = 0; i < sCharacterIDs.length; i++){
+            sCharacterIDs[i] = dummyArrayList2.get(i).intValue();
         }
 
-        CharacterSelectAdapter adapter = new CharacterSelectAdapter(this, mCharacterNames, mCharacterIDs);
+        CharacterSelectAdapter adapter = new CharacterSelectAdapter(this, sCharacterNames, sCharacterIDs);
         mCharacterChoices.setAdapter(adapter);
         mCharacterChoices.setOnItemClickListener(this);
 
     }
 
-    private ArrayList<NameIDPair> getmCharacters(Context c) {
+    private ArrayList<NameIDPair> getmCharacters(Context c) throws IllegalArgumentException{
         Field[] ID_Fields = R.drawable.class.getFields();
         ArrayList<NameIDPair> result = new ArrayList<>();
         HashSet<String> seenFiles = new HashSet<>();
@@ -108,10 +112,13 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
         return result;
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
         Intent gameStart = new Intent(CharacterSelectScreen.this, GameScreen.class);
-        gameStart.putExtra("charID", mCharacterIDs[position]);
+        SharedPref.initialize(CharacterSelectScreen.this.getApplicationContext());
+        SharedPref.write("charID", sCharacterIDs[position]);
+        SharedPref.write("charName", sCharacterNames[position]);
         startActivity(gameStart);
     }
 

@@ -22,6 +22,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".Profile"></activity>
+        <activity android:name=".LocalHighScores" />
+        <activity android:name=".GlobalHighScores" />
     </application>
 
 </manifest>

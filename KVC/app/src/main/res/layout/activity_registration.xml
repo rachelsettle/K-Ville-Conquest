@@ -40,7 +40,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:layout_below="@+id/passwordRegistration"
-        android:layout_alignStart="@+id/passwordRegistration"/>
+        android:layout_alignStart="@+id/passwordRegistration" />
 
     <Button
         android:id="@+id/confirmRegistration"
@@ -50,4 +50,42 @@
         android:text="Register"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/firstNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        android:textSize="18sp"
+        android:layout_below="@+id/passwordInputRegistration"
+        android:layout_alignStart="@+id/passwordInputRegistration"
+        android:layout_marginTop="19dp" />
+
+    <EditText
+        android:id="@+id/firstNameInput"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_below="@+id/firstNameText"
+        android:layout_alignStart="@+id/firstNameText" />
+
+    <TextView
+        android:id="@+id/lastNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Last Name"
+        android:textSize="18sp"
+        android:layout_below="@+id/firstNameInput"
+        android:layout_alignStart="@+id/firstNameInput" />
+
+    <EditText
+        android:id="@+id/lastNameInput"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:layout_alignStart="@+id/lastNameText"
+        android:layout_below="@+id/lastNameText"
+        android:ems="10"
+        android:inputType="textPersonName" />
 </RelativeLayout>

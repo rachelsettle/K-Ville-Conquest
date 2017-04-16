@@ -21,16 +21,20 @@ public class SharedPref {
         }
     }
 
+
+    //for booleans
     public static void write(String tag, boolean value){
         SharedPreferences.Editor editor = sSharedPref.edit();
         editor.putBoolean(tag, value);
         editor.commit();
     }
 
-    public static Boolean read(String tag, boolean defaultValue){
+    public static boolean read(String tag, boolean defaultValue){
         return sSharedPref.getBoolean(tag, defaultValue);
     }
 
+
+    //for Strings
     public static void write(String tag, String s){
         SharedPreferences.Editor editor = sSharedPref.edit();
         editor.putString(tag, s);
@@ -39,6 +43,17 @@ public class SharedPref {
 
     public static String read(String tag, String defaultValue){
         return sSharedPref.getString(tag, defaultValue);
+    }
+
+    //for ints
+    public static void write(String tag, int i){
+        SharedPreferences.Editor  editor = sSharedPref.edit();
+        editor.putInt(tag, i);
+        editor.commit();
+    }
+
+    public static int read(String tag, int defaultValue){
+        return sSharedPref.getInt(tag, defaultValue);
     }
 
 }
