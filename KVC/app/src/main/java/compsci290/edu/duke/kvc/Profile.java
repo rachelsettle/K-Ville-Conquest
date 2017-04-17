@@ -11,12 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 public class Profile extends AppCompatActivity {
 
     private TextView mUserName;
-
+    private DatabaseReference mDBRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,9 @@ public class Profile extends AppCompatActivity {
         SharedPref.initialize(Profile.this.getApplicationContext());
         mUserName = (TextView) this.findViewById(R.id.userName);
         mUserName.setText(SharedPref.read("Username", ""));
+
+        //delete everything here below in the method when done testing
+        mDBRef= FirebaseDatabase.getInstance().getReference("");
     }
 
     public void onGameStartClick(View button){

@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText mFirstNameInput;
     private EditText mLastNameInput;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference firebaseDBRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mFirstNameInput = (EditText) this.findViewById(R.id.firstNameInput);
         mLastNameInput = (EditText) this.findViewById(R.id.lastNameInput);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDBRoot = FirebaseDatabase.getInstance().getReference();
     }
 
 
@@ -41,9 +45,10 @@ public class RegistrationActivity extends AppCompatActivity {
         //process messages
         final ProgressDialog progressDialog = ProgressDialog.show(RegistrationActivity.this, "Please wait...", "Processing...", true);
         //make a new user with the email and password inputs
-        //do nothing if one or both fields is empty
+        //do nothing if any field is empty
 
-        if (mEmailInput.getText().toString().length() > 0 && mPasswordInput.getText().toString().length() > 0) {
+        if ( (mEmailInput.getText().toString().length() * mPasswordInput.getText().toString().length()
+                * mFirstNameInput.getText().toString().length() * mLastNameInput.getText().toString().length()) > 0) {
             (firebaseAuth.createUserWithEmailAndPassword(mEmailInput.getText().toString().trim(), mPasswordInput.getText().toString()))
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -51,6 +56,13 @@ public class RegistrationActivity extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             if (task.isSuccessful()) {
+                                String userID = firebaseAuth.getCurrentUser().getUid();
+                                String firstName = mFirstNameInput.getText().toString();
+                                String lastName = mLastNameInput.getText().toString();
+                                String email = firebaseAuth.getCurrentUser().getEmail();
+                                //write to Firebase Database
+                                //create a new child of the users directory for each userID
+                                firebaseDBRoot.child("Users").child(userID).setValue(new User(firstName, lastName, email));
 
                                 Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
 
@@ -69,7 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         else{
             progressDialog.dismiss();
-            Toast.makeText(RegistrationActivity.this, "Please enter something in for both fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Please enter something in for all fields", Toast.LENGTH_LONG).show();
         }
     }
 
