@@ -46,7 +46,6 @@ public class GameScreen extends Activity {
         int randomScore = giveScore();
         //write user_ID, character, and score to database
         writeScore(randomScore);
-
     }
 
     //spit out a random score for sake of database testing

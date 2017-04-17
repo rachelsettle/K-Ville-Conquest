@@ -84,7 +84,7 @@ public class LocalHighScores extends AppCompatActivity {
         //check to see if the the table is empty
         //do nothing with the list view and just change the textview
         if (numRows == 0) {
-            mLocalScoreText.setText("No scores on this device yet!");
+            mLocalScoreText.setText("No scores on this account yet!");
             db.close();
             return;
         }
@@ -104,7 +104,7 @@ public class LocalHighScores extends AppCompatActivity {
                 i++;
                 cursor.moveToNext();
             }
-            mLocalScoreText.setText("Top " + i + " Highest Scores on this Device");
+            mLocalScoreText.setText("Top " + i + " Highest Scores on this Account");
             LocalHighScoreAdapter adapter = new LocalHighScoreAdapter(this, sUserIDCols, sCharacterCols, sScoreCols);
             mScoreList.setAdapter(adapter);
             db.close();
