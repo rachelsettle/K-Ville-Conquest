@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1013591602487",
+    "firebase_url": "https://kvcregistrationlogin.firebaseio.com",
+    "project_id": "kvcregistrationlogin",
+    "storage_bucket": "kvcregistrationlogin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013591602487:android:9d8dde5f2b829497",
+        "android_client_info": {
+          "package_name": "compsci290.edu.duke.kvc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013591602487-bcghopii6sresra9c55d7dtpi34js5q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9V3gyS8j0OCcJO_gykpxhU0Pg0hjEeBg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
