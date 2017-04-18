@@ -24,6 +24,7 @@
         <activity android:name=".Profile"></activity>
         <activity android:name=".LocalHighScores" />
         <activity android:name=".GlobalHighScores" />
+        <activity android:name=".SettingsActivity" />
     </application>
 
 </manifest>

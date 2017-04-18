@@ -76,4 +76,9 @@ public class Profile extends AppCompatActivity {
         Intent i = new Intent(Profile.this, LocalHighScores.class);
         startActivity(i);
     }
+
+    public void onSettingsClick (View button){
+        Intent i = new Intent(Profile.this, SettingsActivity.class);
+        startActivity(i);
+    }
 }

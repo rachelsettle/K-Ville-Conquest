@@ -2,16 +2,16 @@ package compsci290.edu.duke.kvc;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Range;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -23,22 +23,27 @@ import java.util.Random;
  * Created by Bao on 4/9/2017.
  */
 
-public class GameScreen extends Activity {
+public class GameScreen extends AppCompatActivity implements View.OnTouchListener {
 
-    private int mCharacterID;
     private String mCharacterName;
-    private ImageView mCharacterImage;
     private FirebaseAuth firebaseAuth;
     private LocalScoreDBHelper mDBHelper;
     private DatabaseReference firebaseDBRoot;
 
+    private ImageView tent;
+    private ViewGroup mRootLayout;
+    private float _xDelta;
+    int width;
+    private SoundHelper mSoundHelper;
+    //private Obstacle mObstacle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        //Bao's methods
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
         mDBHelper = new LocalScoreDBHelper(this);
         firebaseAuth = FirebaseAuth.getInstance();
-        mCharacterImage = (ImageView) this.findViewById(R.id.charImage);
 
         //points to the top of the JSON tree
         firebaseDBRoot = FirebaseDatabase.getInstance().getReference();
@@ -47,12 +52,29 @@ public class GameScreen extends Activity {
         SharedPref.initialize(GameScreen.this.getApplicationContext());
 
         //default character is the first character
-        mCharacterID = SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]);
-        mCharacterImage.setImageResource(mCharacterID);
         mCharacterName = SharedPref.read("charName", CharacterSelectScreen.sCharacterNames[0]);
         int randomScore = giveScore();
         //write user_ID, character, and score to database
         writeScore(randomScore);
+
+        //Grant's methods
+        mRootLayout = (ViewGroup) findViewById(R.id.root);
+        tent = (ImageView) mRootLayout.findViewById(R.id.characterImage);
+        tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+        tent.setLayoutParams(layoutParams);
+        tent.setOnTouchListener(this);
+        getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        width = displaymetrics.widthPixels;
+        tent.getLayoutParams().height = height - 50;
+        mSoundHelper = new SoundHelper();
+        mSoundHelper.prepMusicPlayer(this);
+        mSoundHelper.playMusic();
+       //mObstacle = new Obstacle(this,0xFFFF0000,100);
+       //mObstacle.releaseObstacle(height,10);
     }
 
     //spit out a random score for sake of database testing
@@ -83,5 +105,31 @@ public class GameScreen extends Activity {
         //put everyone who scored the same score under the same tree
         String userID = firebaseAuth.getCurrentUser().getUid();
         firebaseDBRoot.child("Scores").child(score + "").child(userID + "").child("CharactersUsed").setValue(mCharacterName);
+    }
+
+    public boolean onTouch(View view, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                _xDelta = view.getX() - event.getRawX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float newX =  event.getRawX() +_xDelta;
+                if((newX <= 0 || newX >= width-view.getWidth())){
+                    break;
+                }
+                view.animate()
+                        .x(event.getRawX() + _xDelta)
+                        .setDuration(0)
+                        .start();
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    protected void onDestroy(){
+        mSoundHelper.pauseMusic();
+        super.onDestroy();
     }
 }
