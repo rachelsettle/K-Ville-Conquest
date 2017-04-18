@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/emailLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="25dp"
+        android:text="Email Address"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/emailInputLogin"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textSize="18sp"
+        android:layout_below="@+id/emailLogin"
+        android:layout_alignStart="@+id/emailLogin" />
+
+    <TextView
+        android:id="@+id/passwordLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="18sp"
+        android:layout_below="@+id/emailInputLogin"
+        android:layout_alignStart="@+id/emailInputLogin" />
+
+    <EditText
+        android:id="@+id/passwordInputLogin"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:layout_alignStart="@+id/passwordLogin"
+        android:layout_below="@+id/passwordLogin"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/confirmLogin"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:onClick="onLoginConfirm"
+        android:text="Login"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>
