@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                                 //store loggined in status and currently logged in email
                                 //will add other fields like first and last name later
                                 SharedPref.write("LoggedInStatus", true);
-                                SharedPref.write("Username", mEmailInput.getText().toString());
                                 //go to profile
                                 Intent i = new Intent(LoginActivity.this, Profile.class);
                                 i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail().toString());

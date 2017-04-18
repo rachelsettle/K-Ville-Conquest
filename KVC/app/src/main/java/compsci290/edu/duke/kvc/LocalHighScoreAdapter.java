@@ -40,13 +40,9 @@ public class LocalHighScoreAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.local_score_item, null, true);
 
         //fill in each row with the userID, character used, and score
-        TextView userIdText = (TextView) rowView.findViewById(R.id.userIDText);
-        TextView userEmailText = (TextView) rowView.findViewById(R.id.userEmailText);
         TextView characterNameText = (TextView) rowView.findViewById(R.id.characterNameText);
         TextView scoreText = (TextView) rowView.findViewById(R.id.scoreText);
 
-        userIdText.setText("User ID: " + mUsersCol[position]);
-        userEmailText.setText("User Email: " + firebaseAuth.getCurrentUser().getEmail());
         characterNameText.setText("Character: " + mCharctersCol[position]);
         scoreText.setText("Score: " + mScoresCol[position]);
 

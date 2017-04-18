@@ -5,21 +5,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/userIDText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:text="User ID:"
-        android:textSize="16dip" />
-
-    <TextView
-        android:id="@+id/userEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:text="Email:"
-        android:textSize="16dip"/>
-    <TextView
         android:id="@+id/characterNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

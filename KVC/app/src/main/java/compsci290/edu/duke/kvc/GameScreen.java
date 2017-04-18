@@ -50,9 +50,9 @@ public class GameScreen extends Activity {
         mCharacterID = SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]);
         mCharacterImage.setImageResource(mCharacterID);
         mCharacterName = SharedPref.read("charName", CharacterSelectScreen.sCharacterNames[0]);
-        //int randomScore = giveScore();
+        int randomScore = giveScore();
         //write user_ID, character, and score to database
-        writeScore(350);
+        writeScore(randomScore);
     }
 
     //spit out a random score for sake of database testing
