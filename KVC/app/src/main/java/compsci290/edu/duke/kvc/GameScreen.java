@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
 
@@ -102,9 +106,33 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         db.close();
 
         //copy to Firebase database
-        //put everyone who scored the same score under the same tree
+        //put everyone who scored the same
+        getNames(score);
         String userID = firebaseAuth.getCurrentUser().getUid();
-        firebaseDBRoot.child("Scores").child(score + "").child(userID + "").child("CharactersUsed").setValue(mCharacterName);
+        DatabaseReference currentUser = firebaseDBRoot.child("Scores").child(score + "").child(userID + "");
+        currentUser.child("characters").child(mCharacterName).setValue("True");
+    }
+
+    //sets the first and last name of the logged in user
+    //in the scores tree
+    public void getNames(int score){
+        String currentID = firebaseAuth.getCurrentUser().getUid();
+        final DatabaseReference currentUser = firebaseDBRoot.child("Users").child(currentID);
+        final DatabaseReference userScore = firebaseDBRoot.child("Scores").child(score + "").child(currentID + "");
+        //only gets called once
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                userScore.child("firstName").setValue(u.firstName);
+                userScore.child("lastName").setValue(u.lastName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("GameScreenError", "onCalledCalled", databaseError.toException());
+            }
+        });
     }
 
     public boolean onTouch(View view, MotionEvent event) {

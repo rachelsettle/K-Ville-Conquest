@@ -62,11 +62,17 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
         mListOfChars = getmCharacters(c);
 
         for (NameIDPair pair : mListOfChars){
-            String imageName = pair.getmImageName();
-            //trim the _character part at the end of character names
-            if (pair.getmImageName() != null){
-                int endingIndex = imageName.indexOf("_character");
-                imageName = imageName.substring(0, endingIndex);
+            String imageName = "";
+            //replace the file name of the image with
+            //a more user friendly name
+            String[] names = pair.getmImageName().split("_");
+
+            for (String name : names){
+                if (!name.contains("character")){
+                    //capitalize the word
+                    imageName = imageName + name.substring(0,1).toUpperCase() + name.substring(1)
+                                + " ";
+                }
             }
 
             dummyArrayList1.add(imageName);
