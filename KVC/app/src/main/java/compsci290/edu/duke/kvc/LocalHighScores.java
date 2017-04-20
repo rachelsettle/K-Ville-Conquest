@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LocalHighScores extends AppCompatActivity {
 
     private ListView mScoreList;
-    private TextView mLocalScoreText;
+    private TextView mLocalScoreInfoText;
     private SQLiteOpenHelper mDBHelper;
     private FirebaseAuth firebaseAuth;
 
@@ -36,7 +35,7 @@ public class LocalHighScores extends AppCompatActivity {
         setContentView(R.layout.local_high_scores);
         mDBHelper = new LocalScoreDBHelper(this.getApplicationContext());
         mScoreList = (ListView) findViewById(R.id.localScoresList);
-        mLocalScoreText = (TextView) findViewById(R.id.localScoreText);
+        mLocalScoreInfoText = (TextView) findViewById(R.id.localScoreInfoText);
         firebaseAuth = FirebaseAuth.getInstance();
         get20HighestScores();
     }
@@ -84,7 +83,7 @@ public class LocalHighScores extends AppCompatActivity {
         //check to see if the the table is empty
         //do nothing with the list view and just change the textview
         if (numRows == 0) {
-            mLocalScoreText.setText("No scores on this account yet!");
+            mLocalScoreInfoText.setText("No scores on this account yet!");
             db.close();
             return;
         }
@@ -104,7 +103,7 @@ public class LocalHighScores extends AppCompatActivity {
                 i++;
                 cursor.moveToNext();
             }
-            mLocalScoreText.setText("Top " + i + " Highest Scores on this Account");
+            mLocalScoreInfoText.setText("Top " + i + " Highest Scores on this Account");
             LocalHighScoreAdapter adapter = new LocalHighScoreAdapter(this, sUserIDCols, sCharacterCols, sScoreCols);
             mScoreList.setAdapter(adapter);
             db.close();

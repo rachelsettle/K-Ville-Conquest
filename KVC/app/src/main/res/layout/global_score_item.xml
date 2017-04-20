@@ -5,18 +5,26 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/localCharacterText"
+        android:id="@+id/playerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dip"
-        android:text="Character: "
+        android:text="Name: "
         android:textSize="14dip" />
 
     <TextView
-        android:id="@+id/localScoreText"
+        android:id="@+id/globalScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dip"
         android:text="Score: "
+        android:textSize="14dip" />
+
+    <TextView
+        android:id="@+id/globalCharacerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:text="Character: "
         android:textSize="14dip" />
 </LinearLayout>

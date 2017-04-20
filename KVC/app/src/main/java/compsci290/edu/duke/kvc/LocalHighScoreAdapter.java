@@ -22,7 +22,6 @@ public class LocalHighScoreAdapter extends ArrayAdapter<String> {
     private String[] mUsersCol;
     private String[] mCharctersCol;
     private String[] mScoresCol;
-    private FirebaseAuth firebaseAuth;
 
 
     public LocalHighScoreAdapter(Activity context, String[] userIDs, String[] charactersUsed,
@@ -32,7 +31,6 @@ public class LocalHighScoreAdapter extends ArrayAdapter<String> {
         mUsersCol = userIDs;
         mCharctersCol = charactersUsed;
         mScoresCol = scores;
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public View getView(int position, View view, ViewGroup parent){
@@ -40,8 +38,8 @@ public class LocalHighScoreAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.local_score_item, null, true);
 
         //fill in each row with the userID, character used, and score
-        TextView characterNameText = (TextView) rowView.findViewById(R.id.characterNameText);
-        TextView scoreText = (TextView) rowView.findViewById(R.id.scoreText);
+        TextView characterNameText = (TextView) rowView.findViewById(R.id.localCharacterText);
+        TextView scoreText = (TextView) rowView.findViewById(R.id.localScoreText);
 
         characterNameText.setText("Character: " + mCharctersCol[position]);
         scoreText.setText("Score: " + mScoresCol[position]);
