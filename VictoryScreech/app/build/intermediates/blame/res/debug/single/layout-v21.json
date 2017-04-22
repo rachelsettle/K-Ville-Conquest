@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\bah\\KVilleConquest\\VictoryScreech\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\Bao\\.android\\build-cache\\522d07b260050b67abc90aa1f23d39e162dc0d39\\output\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "C:\\bah\\KVilleConquest\\VictoryScreech\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\Bao\\.android\\build-cache\\522d07b260050b67abc90aa1f23d39e162dc0d39\\output\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "C:\\bah\\KVilleConquest\\VictoryScreech\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\Bao\\.android\\build-cache\\522d07b260050b67abc90aa1f23d39e162dc0d39\\output\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\bah\\KVilleConquest\\VictoryScreech\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\Bao\\.android\\build-cache\\522d07b260050b67abc90aa1f23d39e162dc0d39\\output\\res\\layout-v21\\notification_template_custom_big.xml"
+    }
+]

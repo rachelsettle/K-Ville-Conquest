@@ -120,7 +120,7 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-        Intent gameStart = new Intent(CharacterSelectScreen.this, GameScreen.class);
+        Intent gameStart = new Intent(CharacterSelectScreen.this, GameOver.class);
         SharedPref.initialize(CharacterSelectScreen.this.getApplicationContext());
         SharedPref.write("charID", sCharacterIDs[position]);
         SharedPref.write("charName", sCharacterNames[position]);
