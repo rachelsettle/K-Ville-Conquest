@@ -1,8 +1,8 @@
 package compsci290.edu.duke.kvc;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -21,6 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
 
 /**
@@ -39,6 +48,7 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
     private float _xDelta;
     int width;
     private SoundHelper mSoundHelper;
+    private Window wind = this.getWindow();
     //private Obstacle mObstacle;
 
     @Override
@@ -68,7 +78,9 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
-        getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
+       // getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
+       // weatherBackground();
+        new backgroundSet().execute();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int height = displaymetrics.heightPixels;
@@ -79,6 +91,62 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         mSoundHelper.playMusic();
        //mObstacle = new Obstacle(this,0xFFFF0000,100);
        //mObstacle.releaseObstacle(height,10);
+    }
+
+    // change background based on weather
+    class backgroundSet extends AsyncTask<Void, Void, Double> {
+
+        @Override
+        protected Double doInBackground(Void... params) {
+            double ans = 0;
+            BufferedReader reader = null;
+            StringBuffer json = new StringBuffer(1024);
+            try {
+                URL url = new URL("http://api.openweathermap.org/data/2.5/weather?id=4464368&units=imperial&appid=54aa8efad13a44916ed53266ee0ab168");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                Log.d("WEATHER", "connection is being made");
+                try {
+                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String tmp = "";
+                    try {
+                        while ((tmp = reader.readLine()) != null)
+                            json.append(tmp).append("\n");
+                        reader.close();
+                        try {
+                            JSONObject data = new JSONObject(json.toString());
+                            JSONObject m = data.getJSONObject("main");
+                            ans = m.getDouble("temp");
+                            Log.d("WEATHER","temperature is" + ans);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    connection.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+           return ans;
+        }
+
+        @Override
+        protected void onPostExecute(Double t){
+            if (t <= 32){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_winter);
+            }
+            else if (t > 32 && t < 80){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_normal);
+            }
+            else if (t >= 80){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_spring);
+            }
+        }
     }
 
     //spit out a random score for sake of database testing
