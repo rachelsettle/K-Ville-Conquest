@@ -134,6 +134,7 @@ public class VictoryScreech extends Activity{
     }
 
     public void doneRecord (View view){
+        doneButon.setEnabled(false);
         Intent i = new Intent(VictoryScreech.this, CharacterSelectScreen.class);
         startActivity(i);
     }
