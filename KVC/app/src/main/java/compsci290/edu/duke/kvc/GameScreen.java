@@ -137,13 +137,13 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         @Override
         protected void onPostExecute(Double t){
             if (t <= 32){
-                getWindow().setBackgroundDrawableResource(R.drawable.blue);
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_winter);
             }
             else if (t > 32 && t < 80){
-                getWindow().setBackgroundDrawableResource(R.drawable.cup);
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_normal);
             }
             else if (t >= 80){
-                getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_spring);
             }
         }
     }
