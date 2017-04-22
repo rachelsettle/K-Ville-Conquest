@@ -17,14 +17,28 @@ public class SettingsActivity extends AppCompatActivity {
     private AudioManager audioManager = null;
     private SeekBar difficultySeekbar = null;
     private TextView diffText = null;
+    private MediaPlayer mediaPlayer = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.settings_activity_main);
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.formation_sound_file); //Used the check seekBarVolume functionality
+        mediaPlayer = MediaPlayer.create(this, R.raw.formation_sound_file); //Used the check seekBarVolume functionality
         mediaPlayer.start(); // no need to call prepare(); create() does that for you
         initControls();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mediaPlayer.stop();
     }
     public void initControls(){ // CODE BORROWED FROM http://stackoverflow.com/questions/10134338/using-seekbar-to-control-volume-in-android
         try
