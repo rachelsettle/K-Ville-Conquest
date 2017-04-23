@@ -2,7 +2,17 @@ package compsci290.edu.duke.kvc;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,8 +37,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.Random;
 
@@ -57,6 +74,8 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     TextView mTentNumberDisplay;
     //private Obstacle mObstacle;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         //Bao's methods
@@ -80,13 +99,22 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         //Grant's methods
         mRootLayout = (ViewGroup) findViewById(R.id.root);
         tent = (ImageView) mRootLayout.findViewById(R.id.characterImage);
-        tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
+        if (SharedPref.read("position",1) != 0){
+            tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
+        }
+        else{
+            //tent.setImageBitmap();
+            Intent intent = getIntent();
+            byte[] bytes = intent.getByteArrayExtra("BMP");
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            tent.setImageBitmap(getTriangleBitmap(bmp,170));
+        }
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(300, 300);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
 
         //set background
-        getWindow().setBackgroundDrawableResource(R.drawable.weather_normal);
+        new backgroundSet().execute();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
@@ -113,6 +141,89 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
             });
         }
         startGameLoop();
+    }
+
+
+    // change background based on weather
+    class backgroundSet extends AsyncTask<Void, Void, Double> {
+        @Override
+        protected Double doInBackground(Void... params) {
+            double ans = 0;
+            BufferedReader reader = null;
+            StringBuffer json = new StringBuffer(1024);
+            try {
+                URL url = new URL("http://api.openweathermap.org/data/2.5/weather?id=4464368&units=imperial&appid=54aa8efad13a44916ed53266ee0ab168");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                Log.d("WEATHER", "connection is being made");
+                try {
+                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String tmp = "";
+                    try {
+                        while ((tmp = reader.readLine()) != null)
+                            json.append(tmp).append("\n");
+                        reader.close();
+                        try {
+                            JSONObject data = new JSONObject(json.toString());
+                            JSONObject m = data.getJSONObject("main");
+                            ans = m.getDouble("temp");
+                            Log.d("WEATHER","temperature is" + ans);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    connection.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return ans;
+        }
+        @Override
+        protected void onPostExecute(Double t){
+            if (t <= 32){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_winter);
+            }
+            else if (t > 32 && t < 80){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_normal);
+            }
+            else if (t >= 80){
+                getWindow().setBackgroundDrawableResource(R.drawable.weather_spring);
+            }
+        }
+    }
+    public static Bitmap getTriangleBitmap(Bitmap bitmap, int radius) {
+        Bitmap finalBitmap;
+        if (bitmap.getWidth() != radius || bitmap.getHeight() != radius)
+            finalBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius,
+                    false);
+        else
+            finalBitmap = bitmap;
+        Bitmap output = Bitmap.createBitmap(finalBitmap.getWidth(),
+                finalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, finalBitmap.getWidth(),
+                finalBitmap.getHeight());
+        Point point1_draw = new Point(75, 0);
+        Point point2_draw = new Point(0, 180);
+        Point point3_draw = new Point(180, 180);
+        Path path = new Path();
+        path.moveTo(point1_draw.x, point1_draw.y);
+        path.lineTo(point2_draw.x, point2_draw.y);
+        path.lineTo(point3_draw.x, point3_draw.y);
+        path.lineTo(point1_draw.x, point1_draw.y);
+        path.close();
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawPath(path, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(finalBitmap, rect, rect, paint);
+        return output;
     }
 
     public void startGameLoop(){

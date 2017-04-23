@@ -1,13 +1,22 @@
 package compsci290.edu.duke.kvc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +56,9 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
 
     public static String[] sCharacterNames;
     public static int[] sCharacterIDs;
+    static final int PICTURE_RESULT = 1;
+    private Bitmap pic;
+    private Uri f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -117,14 +129,60 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
         return result;
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICTURE_RESULT && resultCode == Activity.RESULT_OK) {
+            try {
+                pic = MediaStore.Images.Media.getBitmap(getContentResolver(),f);
+                Log.d("FILES", "getting the Bitmap");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                pic.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+                byte[] bytes = stream.toByteArray();
+                Log.d("FILES", "compressed the Bitmap");
+                Intent gameStart = new Intent(CharacterSelectScreen.this, GameScreen.class);
+                gameStart.putExtra("BMP",bytes);
+                Log.d("FILES", "added the compression");
+                SharedPref.initialize(CharacterSelectScreen.this.getApplicationContext());
+                SharedPref.write("position", 0);
+                SharedPref.write("charName", sCharacterNames[0]);
+                SharedPref.write("charID",0);
+                startActivity(gameStart);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-        Intent gameStart = new Intent(CharacterSelectScreen.this, GameScreen.class);
-        SharedPref.initialize(CharacterSelectScreen.this.getApplicationContext());
-        SharedPref.write("charID", sCharacterIDs[position]);
-        SharedPref.write("charName", sCharacterNames[position]);
-        startActivity(gameStart);
+        if (position != 0){
+            Intent gameStart = new Intent(CharacterSelectScreen.this, GameScreen.class);
+            SharedPref.initialize(CharacterSelectScreen.this.getApplicationContext());
+            SharedPref.write("charID", sCharacterIDs[position]);
+            SharedPref.write("charName", sCharacterNames[position]);
+            SharedPref.write("position", position);
+            startActivity(gameStart);
+        }
+        else{
+            Log.d("CHARACTER", "clicked customizable");
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Log.d("CHARACTER", "made camera intent");
+            File file = null;
+            try {
+                file = File.createTempFile("customizable_tent_character",".jpg",this.getCacheDir());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d("PHOTO", file.getAbsolutePath());
+            try{
+                f = FileProvider.getUriForFile(this, "com.compsci290.edu.duke.kvc.fileprovider", file);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            Log.d("CHARACTER", "got file");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, f);
+            Log.d("CHARACTER", "put file in intent");
+            if(intent.resolveActivity(getPackageManager())!=null) startActivityForResult(intent, PICTURE_RESULT);
+            Log.d("CHARACTER", "starting picture");
+        }
     }
-
 }
