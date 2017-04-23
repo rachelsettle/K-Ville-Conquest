@@ -87,7 +87,6 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
     public void onAnimationUpdate(ValueAnimator animation) {
         setY((Float) animation.getAnimatedValue());
         if(collide(tent,this)){
-            Log.d("thisnull",(mObstacleListener==null)+"");
             mObstacleListener.didCollide(this,true);
             mHit = true;
             mAnimator.cancel();
@@ -114,16 +113,22 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
 
         tent.getLocationInWindow(loc);
         final Rect rc1 = new Rect(loc[0], loc[1],
-                loc[0] + tent.getWidth(), loc[1] - tent.getHeight());
-        Log.d("rect1",""+rc1);
-
+                loc[0] + tent.getWidth(), 300);
         obstacle.getLocationInWindow(loc);
         Rect rc2 = new Rect(loc[0], loc[1],
-                loc[0] + obstacle.getWidth(), loc[1] - obstacle.getHeight());
-        Log.d("rect2",""+rc2);
+                loc[0] + obstacle.getWidth(), loc[1] + obstacle.getHeight());
+
+        Log.d("rect1Left", rc1.left + "");
+        Log.d("rect1Right", rc1.right + "");
+        Log.d("rect1Top", rc1.top + "");
+        Log.d("rect1Bottom", rc1.bottom + "");
+
+        Log.d("rect2Left", rc2.left + "");
+        Log.d("rect2Right", rc2.right + "");
+        Log.d("rect2Top", rc2.top + "");
+        Log.d("rect2Bottom", rc2.bottom + "");
 
         if (Rect.intersects(rc1, rc2)) {
-            Log.d("TAG", "Intersected");
             return true;
         }
         return false;

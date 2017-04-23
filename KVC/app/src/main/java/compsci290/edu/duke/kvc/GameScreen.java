@@ -123,24 +123,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         launcher.execute(mTentNumber);
     }
 
-    public void collide(ImageView tent, Obstacle obstacle) {
 
-        // Location holder
-        final int[] loc = new int[2];
-
-        tent.getLocationInWindow(loc);
-        final Rect rc1 = new Rect(loc[0], loc[1],
-                loc[0] + tent.getWidth(), loc[1] + tent.getHeight());
-
-        obstacle.getLocationInWindow(loc);
-         Rect rc2 = new Rect(loc[0], loc[1],
-                loc[0] + obstacle.getWidth(), loc[1] + obstacle.getHeight());
-
-        if (Rect.intersects(rc1, rc2)) {
-            mScore++;
-            Toast.makeText(this, "Intersected!", Toast.LENGTH_SHORT).show();
-        }
-    }
     @Override
     public void didCollide(Obstacle obstacle, boolean userTouch) {
         mRootLayout.removeView(obstacle);
