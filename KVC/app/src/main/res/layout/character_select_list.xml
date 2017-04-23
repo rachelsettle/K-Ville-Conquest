@@ -5,21 +5,34 @@
     android:orientation="vertical"
     android:weightSum="1"
     >
+
     <TextView
+        android:id="@+id/char_select"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:text="Choose a Character"
-        android:fontFamily="serif"
-        android:textColor="#000000"
-        android:textAlignment="center"
-        android:textSize="30sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:layout_weight="0.82" />
+        android:layout_weight="0.82"
+        android:fontFamily="serif"
+        android:text="Choose a Character"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
     <ListView
         android:id="@+id/characterSelect"
         android:layout_width="match_parent"
         android:layout_height="427dp"
+        android:layout_below="@id/char_select"
         android:layout_weight="0.34" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/characterSelect"
+        android:onClick="customize"
+        android:text="Customize your tent"
+        android:layout_centerHorizontal="true"/>
+
 </LinearLayout>

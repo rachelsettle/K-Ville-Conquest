@@ -1,7 +1,18 @@
 package compsci290.edu.duke.kvc;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -60,8 +71,6 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
 
         //points to the top of the JSON tree
         firebaseDBRoot = FirebaseDatabase.getInstance().getReference();
-
-
         SharedPref.initialize(GameScreen.this.getApplicationContext());
 
         //default character is the first character
@@ -73,12 +82,19 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         //Grant's methods
         mRootLayout = (ViewGroup) findViewById(R.id.root);
         tent = (ImageView) mRootLayout.findViewById(R.id.characterImage);
-        tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
+        if (SharedPref.read("position",1) != 0){
+            tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
+        }
+        else{
+            //tent.setImageBitmap();
+            Intent intent = getIntent();
+            byte[] bytes = intent.getByteArrayExtra("BMP");
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            tent.setImageBitmap(getTriangleBitmap(bmp,170));
+        }
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
-       // getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
-       // weatherBackground();
         new backgroundSet().execute();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -134,6 +150,7 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
            return ans;
         }
 
+
         @Override
         protected void onPostExecute(Double t){
             if (t <= 32){
@@ -148,6 +165,40 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         }
     }
 
+    public static Bitmap getTriangleBitmap(Bitmap bitmap, int radius) {
+        Bitmap finalBitmap;
+        if (bitmap.getWidth() != radius || bitmap.getHeight() != radius)
+            finalBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius,
+                    false);
+        else
+            finalBitmap = bitmap;
+        Bitmap output = Bitmap.createBitmap(finalBitmap.getWidth(),
+                finalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, finalBitmap.getWidth(),
+                finalBitmap.getHeight());
+
+        Point point1_draw = new Point(75, 0);
+        Point point2_draw = new Point(0, 180);
+        Point point3_draw = new Point(180, 180);
+
+        Path path = new Path();
+        path.moveTo(point1_draw.x, point1_draw.y);
+        path.lineTo(point2_draw.x, point2_draw.y);
+        path.lineTo(point3_draw.x, point3_draw.y);
+        path.lineTo(point1_draw.x, point1_draw.y);
+        path.close();
+
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawPath(path, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(finalBitmap, rect, rect, paint);
+
+        return output;
+    }
     //spit out a random score for sake of database testing
     private static int giveScore(){
         //returns score between [0, 1000]
