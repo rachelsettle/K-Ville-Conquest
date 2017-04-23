@@ -4,10 +4,13 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import compsci290.edu.duke.kvc.util.PixelHelper;
 
@@ -18,17 +21,20 @@ import compsci290.edu.duke.kvc.util.PixelHelper;
 public class Obstacle extends android.support.v7.widget.AppCompatImageView implements Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
     private ValueAnimator mAnimator;
     private ObstacleListener mObstacleListener;
-    private boolean mHit;
+    private boolean mHit = false;
     private String mObstacleType;
+    private ImageView tent;
 
     public Obstacle(Context context) {
         super(context);
         mObstacleListener = (ObstacleListener) context;
     }
 
-    public Obstacle(Context context, String obstacleType, int rawHeight) {
+    public Obstacle(Context context, String obstacleType, int rawHeight, ImageView tent) {
         super(context);
+        mObstacleListener = (ObstacleListener) context;
         this.mObstacleType = obstacleType;
+        this.tent = tent;
 
         //Gets resource ID from file name String
         Resources resources = context.getResources();
@@ -43,7 +49,6 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
         int dpWidth = (PixelHelper.pixelsToDp(rawWidth, context))/3;
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(dpWidth,dpHeight);
         setLayoutParams(params);
-
     }
 
     public void releaseObstacle(int screenHeight, int duration){
@@ -57,6 +62,7 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
         mAnimator.start();
     }
 
+
     @Override
     public void onAnimationStart(Animator animation) {
 
@@ -64,9 +70,7 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        // if(!mHit){
-        //     mObstacleListener.collision(this,false);
-        // }
+
     }
 
     @Override
@@ -82,21 +86,47 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
         setY((Float) animation.getAnimatedValue());
+        if(collide(tent,this)){
+            Log.d("thisnull",(mObstacleListener==null)+"");
+            mObstacleListener.didCollide(this,true);
+            mHit = true;
+            mAnimator.cancel();
+        }
+
     }
 
+
     //OnTouchEvent to handle what to do on collisions
-    //public boolean onTouchEvent(MotionEvent event){
-    //if(!mHit && event.getAction()==MotionEvent.ACTION_DOWN){
-    //  mObstacleListener.collision(this,true);
-    //   mHit = true;
-    //  mAnimator.cancel();
-    //  }
-    // return super.onTouchEvent(event);
-    // }
+    public boolean onTouchEvent(MotionEvent event){
+    if(!mHit && event.getAction()==MotionEvent.ACTION_DOWN){
+      }
+     return super.onTouchEvent(event);
+     }
 
     public interface ObstacleListener{
-        void collision(Obstacle obstacle, boolean userTouch);
+        void didCollide(Obstacle obstacle, boolean userTouch);
+    }
 
+    public boolean collide(ImageView tent, Obstacle obstacle) {
+
+        // Location holder
+        final int[] loc = new int[2];
+
+        tent.getLocationInWindow(loc);
+        final Rect rc1 = new Rect(loc[0], loc[1],
+                loc[0] + tent.getWidth(), loc[1] - tent.getHeight());
+        Log.d("rect1",""+rc1);
+
+        obstacle.getLocationInWindow(loc);
+        Rect rc2 = new Rect(loc[0], loc[1],
+                loc[0] + obstacle.getWidth(), loc[1] - obstacle.getHeight());
+        Log.d("rect2",""+rc2);
+
+        if (Rect.intersects(rc1, rc2)) {
+            Log.d("TAG", "Intersected");
+            return true;
+        }
+        return false;
     }
 
     public String getType(){

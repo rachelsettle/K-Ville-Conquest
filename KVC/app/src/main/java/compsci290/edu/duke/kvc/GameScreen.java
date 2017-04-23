@@ -3,6 +3,7 @@ package compsci290.edu.duke.kvc;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import compsci290.edu.duke.kvc.util.SoundHelper;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -30,7 +36,7 @@ import java.util.Random;
  * Created by Bao on 4/9/2017.
  */
 
-public class GameScreen extends AppCompatActivity implements View.OnTouchListener {
+public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleListener, View.OnTouchListener {
 
     private String mCharacterName;
     private FirebaseAuth firebaseAuth;
@@ -46,7 +52,9 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
     private SoundHelper mSoundHelper;
     private int mScreenWidth, mScreenHeight;
     private int mScore;
+    TextView mScoreDisplay;
     private int mTentNumber;
+    TextView mTentNumberDisplay;
     //private Obstacle mObstacle;
 
     @Override
@@ -73,7 +81,7 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         mRootLayout = (ViewGroup) findViewById(R.id.root);
         tent = (ImageView) mRootLayout.findViewById(R.id.characterImage);
         tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(300, 300);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
 
@@ -84,11 +92,14 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
 
         int height = displaymetrics.heightPixels;
         width = displaymetrics.widthPixels;
-        tent.getLayoutParams().height = height - 50;
+        tent.getLayoutParams().height = height;
 
         mSoundHelper = new SoundHelper();
         mSoundHelper.prepMusicPlayer(this);
         mSoundHelper.playMusic();
+
+        mScoreDisplay = (TextView) findViewById(R.id.score);
+        mTentNumberDisplay = (TextView) findViewById(R.id.tentNumber);
 
         //Gets Screen Height and Screen Width
         ViewTreeObserver viewTreeObserver = mRootLayout.getViewTreeObserver();
@@ -107,8 +118,41 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
     public void startGameLoop(){
         Log.d("TAG","GAME LOOP STARTED");
         mTentNumber=25;
+        updateDisplay();
         ObstacleLauncher launcher = new ObstacleLauncher();
         launcher.execute(mTentNumber);
+    }
+
+    public void collide(ImageView tent, Obstacle obstacle) {
+
+        // Location holder
+        final int[] loc = new int[2];
+
+        tent.getLocationInWindow(loc);
+        final Rect rc1 = new Rect(loc[0], loc[1],
+                loc[0] + tent.getWidth(), loc[1] + tent.getHeight());
+
+        obstacle.getLocationInWindow(loc);
+         Rect rc2 = new Rect(loc[0], loc[1],
+                loc[0] + obstacle.getWidth(), loc[1] + obstacle.getHeight());
+
+        if (Rect.intersects(rc1, rc2)) {
+            mScore++;
+            Toast.makeText(this, "Intersected!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void didCollide(Obstacle obstacle, boolean userTouch) {
+        mRootLayout.removeView(obstacle);
+        if(userTouch){
+            mScore++;//+ obstacle.obstacleType correlating value
+        }
+        updateDisplay();
+    }
+
+    private void updateDisplay() {
+        mScoreDisplay.setText(String.valueOf(mScore));
+        mTentNumberDisplay.setText(String.valueOf(mTentNumber));
     }
 
     private class ObstacleLauncher extends AsyncTask<Integer, Integer, Void> {
@@ -152,7 +196,7 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
 
     private void launchObstacle(int x) {
 
-        Obstacle obstacle = new Obstacle(GameScreen.this,"cup",100);
+        Obstacle obstacle = new Obstacle(GameScreen.this,"cup",100,tent);
         int mWidth = obstacle.getWidth();
         obstacle.setX((float) x+mWidth);
         obstacle.setY(0f-tent.getHeight());
