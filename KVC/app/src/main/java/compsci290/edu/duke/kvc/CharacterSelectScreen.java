@@ -40,26 +40,6 @@ import java.util.HashSet;
 public class CharacterSelectScreen extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
-   /* public void customize(View view) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "kvilleconquest.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    } */
-
     public class NameIDPair{
 
         private String mImageName;
@@ -89,7 +69,6 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
     public static String[] sCharacterNames;
     public static int[] sCharacterIDs;
     static final int PICTURE_RESULT = 1;
-    public String mCurrentPhotoPath;
     private Bitmap pic;
     private Uri f;
 

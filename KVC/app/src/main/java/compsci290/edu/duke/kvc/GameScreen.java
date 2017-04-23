@@ -199,6 +199,7 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
 
         return output;
     }
+
     //spit out a random score for sake of database testing
     private static int giveScore(){
         //returns score between [0, 1000]

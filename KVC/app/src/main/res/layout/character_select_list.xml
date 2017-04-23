@@ -27,12 +27,4 @@
         android:layout_below="@id/char_select"
         android:layout_weight="0.34" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/characterSelect"
-        android:onClick="customize"
-        android:text="Customize your tent"
-        android:layout_centerHorizontal="true"/>
-
 </LinearLayout>
