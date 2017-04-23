@@ -4,9 +4,14 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.media.Image;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -110,28 +115,84 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
 
         // Location holder
         final int[] loc = new int[2];
-
         tent.getLocationInWindow(loc);
-        final Rect rc1 = new Rect(loc[0], loc[1],
-                loc[0] + tent.getWidth(), 300);
+        int tentX = loc[0];
+        int tentY = loc[1];
+       // final Rect rc1 = new Rect(loc[0], loc[1],
+         //       loc[0] + tent.getWidth(), 300);
         obstacle.getLocationInWindow(loc);
-        Rect rc2 = new Rect(loc[0], loc[1],
-                loc[0] + obstacle.getWidth(), loc[1] + obstacle.getHeight());
+        int obstacleX = loc[0];
+        int obstacleY = loc[1];
 
-        Log.d("rect1Left", rc1.left + "");
-        Log.d("rect1Right", rc1.right + "");
-        Log.d("rect1Top", rc1.top + "");
-        Log.d("rect1Bottom", rc1.bottom + "");
+        View obstacleView = (View) obstacle;
+        //Rect rc2 = new Rect(loc[0], loc[1],
+          //      loc[0] + obstacle.getWidth(), loc[1] + obstacle.getHeight());
+        return isCollisionDetected(tent,tentX,tentY,obstacleView,obstacleX,obstacleY);
+    }
 
-        Log.d("rect2Left", rc2.left + "");
-        Log.d("rect2Right", rc2.right + "");
-        Log.d("rect2Top", rc2.top + "");
-        Log.d("rect2Bottom", rc2.bottom + "");
+    public static boolean isCollisionDetected(ImageView tent, int x1, int y1,
+                                              View obstacle, int x2, int y2) {
 
-        if (Rect.intersects(rc1, rc2)) {
-            return true;
+        Bitmap bitmap1 = getViewBitmap(tent);
+        Bitmap bitmap2 = getViewBitmap(obstacle);
+
+        if (bitmap1 == null || bitmap2 == null) {
+            throw new IllegalArgumentException("bitmaps cannot be null");
         }
+
+        Rect bounds1 = new Rect(x1, y1, x1 + bitmap1.getWidth(), y1 + bitmap1.getHeight());
+        Rect bounds2 = new Rect(x2, y2, x2 + bitmap2.getWidth(), y2 + bitmap2.getHeight());
+
+        if (Rect.intersects(bounds1, bounds2)) {
+            Rect collisionBounds = getCollisionBounds(bounds1, bounds2);
+            for (int i = collisionBounds.left; i < collisionBounds.right; i++) {
+                for (int j = collisionBounds.top; j < collisionBounds.bottom; j++) {
+                    int bitmap1Pixel = bitmap1.getPixel(i - x1, j - y1);
+                    int bitmap2Pixel = bitmap2.getPixel(i - x2, j - y2);
+                    if (isFilled(bitmap1Pixel) && isFilled(bitmap2Pixel)) {
+                        bitmap1.recycle();
+                        bitmap1 = null;
+                        bitmap2.recycle();
+                        bitmap2 = null;
+                        return true;
+                    }
+                }
+            }
+        }
+        bitmap1.recycle();
+        bitmap1 = null;
+        bitmap2.recycle();
+        bitmap2 = null;
         return false;
+    }
+
+    private static Bitmap getViewBitmap(View v) {
+        if (v.getMeasuredHeight() <= 0) {
+            int specWidth = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            v.measure(specWidth, specWidth);
+            Bitmap b = Bitmap.createBitmap(v.getLayoutParams().width, v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(b);
+            v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+            v.draw(c);
+            return b;
+        }
+        Bitmap b = Bitmap.createBitmap(v.getLayoutParams().width, v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+        v.draw(c);
+        return b;
+    }
+
+    private static Rect getCollisionBounds(Rect rect1, Rect rect2) {
+        int left = Math.max(rect1.left, rect2.left);
+        int top = Math.max(rect1.top, rect2.top);
+        int right = Math.min(rect1.right, rect2.right);
+        int bottom = Math.min(rect1.bottom, rect2.bottom);
+        return new Rect(left, top, right, bottom);
+    }
+
+    private static boolean isFilled(int pixel) {
+        return pixel != Color.TRANSPARENT;
     }
 
     public String getType(){
