@@ -3,16 +3,18 @@ package compsci290.edu.duke.kvc;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import compsci290.edu.duke.kvc.util.SoundHelper;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -34,11 +37,16 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
     private LocalScoreDBHelper mDBHelper;
     private DatabaseReference firebaseDBRoot;
 
+
     private ImageView tent;
     private ViewGroup mRootLayout;
     private float _xDelta;
     int width;
+
     private SoundHelper mSoundHelper;
+    private int mScreenWidth, mScreenHeight;
+    private int mScore;
+    private int mTentNumber;
     //private Obstacle mObstacle;
 
     @Override
@@ -68,17 +76,88 @@ public class GameScreen extends AppCompatActivity implements View.OnTouchListene
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
-        getWindow().setBackgroundDrawableResource(R.drawable.kvillebackground);
+
+        //set background
+        getWindow().setBackgroundDrawableResource(R.drawable.weather_normal);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
         int height = displaymetrics.heightPixels;
         width = displaymetrics.widthPixels;
         tent.getLayoutParams().height = height - 50;
+
         mSoundHelper = new SoundHelper();
         mSoundHelper.prepMusicPlayer(this);
         mSoundHelper.playMusic();
-       //mObstacle = new Obstacle(this,0xFFFF0000,100);
-       //mObstacle.releaseObstacle(height,10);
+
+        //Gets Screen Height and Screen Width
+        ViewTreeObserver viewTreeObserver = mRootLayout.getViewTreeObserver();
+        if(viewTreeObserver.isAlive()){
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                public void onGlobalLayout(){
+                    mRootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    mScreenHeight = mRootLayout.getHeight();
+                    mScreenWidth = mRootLayout.getWidth();
+                }
+            });
+        }
+        startGameLoop();
+    }
+
+    public void startGameLoop(){
+        Log.d("TAG","GAME LOOP STARTED");
+        mTentNumber=25;
+        ObstacleLauncher launcher = new ObstacleLauncher();
+        launcher.execute(mTentNumber);
+    }
+
+    private class ObstacleLauncher extends AsyncTask<Integer, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+
+
+            int tentNumber = params[0];
+            Log.d("TAG","OBSTACLE LAUNCHER RAN");
+
+            while (tentNumber > 0) {
+
+//              Get a random horizontal position for the next balloon
+                Random random = new Random();
+                int xPosition = random.nextInt((mScreenWidth)+1);
+                publishProgress(xPosition);
+                tentNumber--;
+
+//              Wait a random number of milliseconds before looping
+                int delay = 1500;
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            int xPosition = values[0];
+            launchObstacle(xPosition);
+        }
+
+    }
+
+    private void launchObstacle(int x) {
+
+        Obstacle obstacle = new Obstacle(GameScreen.this,"cup",100);
+        int mWidth = obstacle.getWidth();
+        obstacle.setX((float) x+mWidth);
+        obstacle.setY(0f-tent.getHeight());
+        mRootLayout.addView(obstacle);
+        obstacle.releaseObstacle(mScreenHeight, 2000);
     }
 
     //spit out a random score for sake of database testing
