@@ -1,7 +1,9 @@
 package compsci290.edu.duke.kvc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -28,6 +30,16 @@ public class GameOver extends Activity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void playAgain(View view){
+        Intent i = new Intent(GameOver.this,GameScreen.class);
+        startActivity(i);
+    }
+
+    public void goToHome(View view){
+        Intent j = new Intent(GameOver.this,Profile.class);
+        startActivity(j);
     }
 
 }

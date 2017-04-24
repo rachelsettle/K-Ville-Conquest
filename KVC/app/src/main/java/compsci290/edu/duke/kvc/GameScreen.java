@@ -67,13 +67,10 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     private LocalScoreDBHelper mDBHelper;
     private DatabaseReference firebaseDBRoot;
     private int duration=3000;
-
-
     private ImageView tent;
     private ViewGroup mRootLayout;
     private float _xDelta;
     int width;
-
     private SoundHelper mSoundHelper;
     private int mScreenWidth, mScreenHeight;
     private int mScore;
@@ -82,8 +79,6 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     TextView mTentNumberDisplay;
     private ArrayList<String> mObstacles;
     //private Obstacle mObstacle;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -281,14 +276,14 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
                 tentNumber--;
 
 //              Wait a random number of milliseconds before looping
-                int delay = 1500;
+                int delay = 1200;
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
+            gameOver();
             return null;
 
         }

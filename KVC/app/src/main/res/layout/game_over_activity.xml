@@ -11,9 +11,28 @@
         android:textAlignment="center" />
 
     <TextView
+        android:id="@+id/gameOverScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/gameOverText"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/playAgain"
+        android:layout_below="@id/gameOverScore"
+        android:text="Play Again"
+        android:onClick="playAgain"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backToHome"
+        android:layout_below="@id/playAgain"
+        android:text="Home"
+        android:onClick="goToHome"
         />
 
 </RelativeLayout>
