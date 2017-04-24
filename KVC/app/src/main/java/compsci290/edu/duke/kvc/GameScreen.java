@@ -54,6 +54,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static android.R.attr.max;
+import static android.R.attr.start;
 
 /**
  * Created by Bao on 4/9/2017.
@@ -333,6 +334,12 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         }
 
         return mObstacles;
+    }
+
+    public void gameOver(){
+        Intent score = new Intent(GameScreen.this,GameOver.class);
+        score.putExtra("Score",mScore);
+        startActivity(score);
     }
 
     //spit out a random score for sake of database testing
