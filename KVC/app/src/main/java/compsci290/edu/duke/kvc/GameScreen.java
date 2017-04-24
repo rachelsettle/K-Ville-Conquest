@@ -228,7 +228,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
 
     public void startGameLoop(){
         Log.d("TAG","GAME LOOP STARTED");
-        mTentNumber=25;
+        mTentNumber=50;
         updateDisplay();
         ObstacleLauncher launcher = new ObstacleLauncher();
         launcher.execute(mTentNumber);
@@ -239,7 +239,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     public void didCollide(Obstacle obstacle, boolean userTouch) {
         mRootLayout.removeView(obstacle);
         if(userTouch){
-            mScore++;//+ obstacle.obstacleType correlating value
+            mScore=mScore+obstacle.getPoints();
         }
         updateDisplay();
     }

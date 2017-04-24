@@ -198,4 +198,32 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
     public String getType(){
         return mObstacleType ;
     }
+
+    public int getPoints(){
+        int points = 0;
+        switch (this.getType()){
+            case "cup":
+                points++;
+                break;
+            case "pizza":
+                points=points+3;
+                break;
+            case "pillow":
+                points=points+5;
+                break;
+            case "horn":
+                points=points-1;
+                break;
+            case "mud":
+                points=points-3;
+                break;
+            case "puddle":
+                points=points-5;
+                break;
+            case "uncfan":
+                points=points-10;
+                break;
+        }
+        return points;
+    }
 }
