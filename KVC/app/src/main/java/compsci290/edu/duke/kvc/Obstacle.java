@@ -205,22 +205,22 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
             case "cup":
                 points++;
                 break;
-            case "pizza":
+            case "pizza_obstacle":
                 points=points+3;
                 break;
-            case "pillow":
+            case "pillow_obstacle":
                 points=points+5;
                 break;
-            case "horn":
+            case "horn_obstacle":
                 points=points-1;
                 break;
-            case "mud":
+            case "mud_obstacle":
                 points=points-3;
                 break;
-            case "puddle":
+            case "puddle_obstacle":
                 points=points-5;
                 break;
-            case "uncfan":
+            case "uncfan_obstacle":
                 points=points-10;
                 break;
         }

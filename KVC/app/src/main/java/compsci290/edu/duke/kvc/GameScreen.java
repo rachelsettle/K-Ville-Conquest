@@ -44,10 +44,16 @@ import org.w3c.dom.Text;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static android.R.attr.max;
 
 /**
  * Created by Bao on 4/9/2017.
@@ -59,6 +65,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     private FirebaseAuth firebaseAuth;
     private LocalScoreDBHelper mDBHelper;
     private DatabaseReference firebaseDBRoot;
+    private int duration=3000;
 
 
     private ImageView tent;
@@ -72,6 +79,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     TextView mScoreDisplay;
     private int mTentNumber;
     TextView mTentNumberDisplay;
+    private ArrayList<String> mObstacles;
     //private Obstacle mObstacle;
 
 
@@ -84,7 +92,12 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         mDBHelper = new LocalScoreDBHelper(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //points to the top of the JSON tree
+        Bundle extras = getIntent().getExtras();
+        duration = extras.getInt("diffSettings");
+
+        findObstacles();
+
+                //points to the top of the JSON tree
         firebaseDBRoot = FirebaseDatabase.getInstance().getReference();
 
 
@@ -289,13 +302,37 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     }
 
     private void launchObstacle(int x) {
-
-        Obstacle obstacle = new Obstacle(GameScreen.this,"cup",100,tent);
+        Obstacle obstacle = new Obstacle(GameScreen.this,getObstacle()
+                ,100,tent);
         int mWidth = obstacle.getWidth();
         obstacle.setX((float) x+mWidth);
         obstacle.setY(0f-tent.getHeight());
         mRootLayout.addView(obstacle);
-        obstacle.releaseObstacle(mScreenHeight, 2000);
+        obstacle.releaseObstacle(mScreenHeight, duration);
+    }
+
+    //Just wrote this
+    private String getObstacle(){
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+        return mObstacles.get(randomNum);
+    }
+    //Just wrote this
+    private ArrayList<String> findObstacles(){
+        Field[] ID_Fields = R.drawable.class.getFields();
+        for (Field f: ID_Fields){
+            try{
+                String fileName = f.getName();
+
+                if (fileName.contains("obstacle")){
+                    mObstacles.add(fileName);
+                }
+            }
+            catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
+        }
+
+        return mObstacles;
     }
 
     //spit out a random score for sake of database testing

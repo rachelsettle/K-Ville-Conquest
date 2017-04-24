@@ -53,6 +53,16 @@
         android:onClick="siteLink"
         android:layout_below="@+id/diffDescription"
         android:layout_centerHorizontal="true" />
+    <Button
+        android:text="Back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Back"
+        android:layout_marginTop="34dp"
+        android:clickable="true"
+        android:onClick="backToMain"
+        android:layout_below="@+id/InfoButton"
+        android:layout_centerHorizontal="true" />
     <TextView
         android:text="Difficulty"
         android:layout_width="wrap_content"

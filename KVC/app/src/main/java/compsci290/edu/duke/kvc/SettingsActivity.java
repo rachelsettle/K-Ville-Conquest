@@ -2,6 +2,7 @@ package compsci290.edu.duke.kvc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -78,9 +79,32 @@ public class SettingsActivity extends AppCompatActivity {
     public void siteLink(View view){
         goToURL("http://rachelsettle.iss240.net/kville.html");
     }
+
+    public void backToMain(View view){
+        Intent i = new Intent(SettingsActivity.this, Profile.class);
+        i.putExtra("diffSettings",getDuration(diffText));
+        startActivity(i);
+       ;
+    }
+
     private void goToURL(String URL){
         Uri uriURL = Uri.parse(URL);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriURL);
         startActivity(launchBrowser);
+    }
+
+    public int getDuration(TextView diffText){
+        if(diffText.getText()=="Easy"){
+            return 3000;
+        }
+            else if(diffText.getText()=="Medium"){
+                return 2000;
+        }
+            else if(diffText.getText()=="Hard"){
+                return 1000;
+        }
+        else {
+            return 3000;
+        }
     }
 }
