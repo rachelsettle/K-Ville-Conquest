@@ -68,6 +68,8 @@ public class SettingsActivity extends AppCompatActivity {
                     else if (progress == 2){
                         diffText.setText("Hard");
                     }
+                    SharedPref.initialize(SettingsActivity.this.getApplicationContext());
+                    SharedPref.write("diffSettings",getDuration(diffText));
                 }
             });
         }
@@ -82,7 +84,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void backToMain(View view){
         Intent i = new Intent(SettingsActivity.this, Profile.class);
-        i.putExtra("diffSettings",getDuration(diffText));
         startActivity(i);
        ;
     }

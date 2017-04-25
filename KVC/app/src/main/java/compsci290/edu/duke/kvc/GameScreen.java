@@ -66,7 +66,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     private FirebaseAuth firebaseAuth;
     private LocalScoreDBHelper mDBHelper;
     private DatabaseReference firebaseDBRoot;
-    private int duration=3000;
+    private int duration;
     private ImageView tent;
     private ViewGroup mRootLayout;
     private float _xDelta;
@@ -88,9 +88,6 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         mDBHelper = new LocalScoreDBHelper(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Bundle extras = getIntent().getExtras();
-        duration = extras.getInt("diffSettings");
-
         findObstacles();
 
                 //points to the top of the JSON tree
@@ -101,6 +98,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
 
         //default character is the first character
         mCharacterName = SharedPref.read("charName", CharacterSelectScreen.sCharacterNames[0]);
+        duration = SharedPref.read("diffSettings",3000);
         int randomScore = giveScore();
         //write user_ID, character, and score to database
         writeScore(randomScore);
