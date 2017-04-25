@@ -47,7 +47,32 @@ public class CharacterSelectAdapter extends ArrayAdapter<String>{
         TextView charName = (TextView) rowView.findViewById(R.id.charName);
 
         charIcon.setImageResource(mIDs[position]);
-        charName.setText(mNames[position]);
+
+        //need to display tent power
+        String characterActualName = mNames[position];
+
+        Log.d("charName", characterActualName);
+        Log.d("position", position + "");
+
+        if (characterActualName.contains("Duke")){
+            charName.setText(characterActualName + ": \n" + "Doubles play time.");
+        }
+
+        else if (characterActualName.contains("Ice Cream")) {
+            charName.setText(characterActualName + ": \n" + "Doubles tent size.");
+        }
+
+        else if (characterActualName.contains("Ocean")) {
+            charName.setText(characterActualName + ": \n" + "No deductions for first 5 hits. Faster fall rates.");
+        }
+
+        else if (characterActualName.contains("Video Game")) {
+            charName.setText(characterActualName + ": \n" + "Doubles points and deductions");
+        }
+
+        else {
+            charName.setText(characterActualName + ": \n" + "No special powers.");
+        }
 
         return rowView;
     }

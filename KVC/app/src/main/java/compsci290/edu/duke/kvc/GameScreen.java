@@ -1,9 +1,6 @@
 package compsci290.edu.duke.kvc;
 
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -26,20 +23,11 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import compsci290.edu.duke.kvc.util.SoundHelper;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,13 +36,7 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static android.R.attr.max;
-import static android.R.attr.start;
 
 /**
  * Created by Bao on 4/9/2017.
@@ -68,13 +50,18 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     private ViewGroup mRootLayout;
     private float _xDelta;
     int width;
+    int height;
     private SoundHelper mSoundHelper;
     private int mScreenWidth, mScreenHeight;
     private int mScore;
     TextView mScoreDisplay;
-    private int mTentNumber;
+    private int mTentNumber=50;
     TextView mTentNumberDisplay;
     private ArrayList<String> mObstacles;
+    private String mTentName;
+    private int mScoreMultiplier = 1;
+    private int mTentSize = 300;
+    private int mTankDamageTimes = 0;
     //private Obstacle mObstacle;
 
     @Override
@@ -108,7 +95,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             tent.setImageBitmap(getTriangleBitmap(bmp,170));
         }
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(300, 300);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(mTentSize, mTentSize);
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
 
@@ -117,7 +104,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-        int height = displaymetrics.heightPixels;
+        height = displaymetrics.heightPixels;
         width = displaymetrics.widthPixels;
         tent.getLayoutParams().height = height;
 
@@ -139,9 +126,40 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
                 }
             });
         }
+        setTentPowers();
         startGameLoop();
     }
 
+    public void setTentPowers(){
+        mTentName = SharedPref.read("charName", "Duke Tent");
+        Log.d("tentName", mTentName);
+        //double the point values of everything
+        if (mTentName.contains("Video Game Tent")){
+            mScoreMultiplier = 2;
+            return;
+        }
+        //double time duration
+        else if (mTentName.contains("Duke Tent")){
+            mTentNumber = mTentNumber*2;
+            return;
+        }
+        //double tent size
+        else if (mTentName.contains("Ice Cream Tent")){
+            Log.d("chocolate", "fudge");
+            mTentSize = mTentSize*2;
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(mTentSize, mTentSize);
+            tent.setLayoutParams(layoutParams);
+            tent.getLayoutParams().height = height;
+            return;
+        }
+        //no point deduction for first 5 negatives
+        //but nmakes things drop faster
+        else if (mTentName.contains("Ocean Tent")) {
+            mTankDamageTimes = 5;
+            duration = duration-500;
+            return;
+        }
+    }
 
     // change background based on weather
     class backgroundSet extends AsyncTask<Void, Void, Double> {
@@ -227,7 +245,6 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
 
     public void startGameLoop(){
         Log.d("TAG","GAME LOOP STARTED");
-        mTentNumber=50;
         updateDisplay();
         ObstacleLauncher launcher = new ObstacleLauncher();
         launcher.execute(mTentNumber);
@@ -238,7 +255,15 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     public void didCollide(Obstacle obstacle, boolean userTouch) {
         mRootLayout.removeView(obstacle);
         if(userTouch){
-            mScore=mScore+obstacle.getPoints();
+            //don't change score if you have more tank times
+            if (mTankDamageTimes > 0) {
+                if (obstacle.getPoints() < 0) {
+                    mTankDamageTimes--;
+                    return;
+                }
+            }
+
+            mScore = mScore + (obstacle.getPoints() * mScoreMultiplier);
         }
         updateDisplay();
     }
