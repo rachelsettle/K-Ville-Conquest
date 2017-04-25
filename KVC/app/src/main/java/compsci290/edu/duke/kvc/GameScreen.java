@@ -263,8 +263,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
             while (tentNumber > 0) {
 
 //              Get a random horizontal position for the next balloon
-                Random random = new Random();
-                int xPosition = random.nextInt((mScreenWidth)+1);
+                int xPosition = ThreadLocalRandom.current().nextInt(300,width-300);
                 publishProgress(xPosition, tentNumber);
                 tentNumber--;
 //              Wait a random number of milliseconds before looping

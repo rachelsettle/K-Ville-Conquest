@@ -202,7 +202,7 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
     public int getPoints(){
         int points = 0;
         switch (this.getType()){
-            case "cup":
+            case "cup_obstacle":
                 points++;
                 break;
             case "pizza_obstacle":
