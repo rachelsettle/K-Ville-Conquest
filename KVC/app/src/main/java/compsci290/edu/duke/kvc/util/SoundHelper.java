@@ -41,4 +41,10 @@ public class SoundHelper {
             mMusicPlayer.pause();
         }
     }
+
+    public void stopMusic(){
+        if(mMusicPlayer!=null && mMusicPlayer.isPlaying()){
+            mMusicPlayer.stop();
+        }
+    }
 }

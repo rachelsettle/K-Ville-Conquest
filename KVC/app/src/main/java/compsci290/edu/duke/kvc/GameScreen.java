@@ -62,10 +62,7 @@ import static android.R.attr.start;
 
 public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleListener, View.OnTouchListener {
 
-    private String mCharacterName;
-    private FirebaseAuth firebaseAuth;
-    private LocalScoreDBHelper mDBHelper;
-    private DatabaseReference firebaseDBRoot;
+
     private int duration;
     private ImageView tent;
     private ViewGroup mRootLayout;
@@ -85,23 +82,18 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         //Bao's methods
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
-        mDBHelper = new LocalScoreDBHelper(this);
-        firebaseAuth = FirebaseAuth.getInstance();
+
 
         findObstacles();
 
                 //points to the top of the JSON tree
-        firebaseDBRoot = FirebaseDatabase.getInstance().getReference();
+
 
 
         SharedPref.initialize(GameScreen.this.getApplicationContext());
 
         //default character is the first character
-        mCharacterName = SharedPref.read("charName", CharacterSelectScreen.sCharacterNames[0]);
         duration = SharedPref.read("diffSettings",3000);
-        int randomScore = giveScore();
-        //write user_ID, character, and score to database
-        writeScore(randomScore);
 
         //Grant's methods
         mRootLayout = (ViewGroup) findViewById(R.id.root);
@@ -253,6 +245,9 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
 
     private void updateDisplay() {
         mScoreDisplay.setText(String.valueOf(mScore));
+    }
+
+    private void updateDisplay(int mTentNumber) {
         mTentNumberDisplay.setText(String.valueOf(mTentNumber));
     }
 
@@ -270,9 +265,8 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
 //              Get a random horizontal position for the next balloon
                 Random random = new Random();
                 int xPosition = random.nextInt((mScreenWidth)+1);
-                publishProgress(xPosition);
+                publishProgress(xPosition, tentNumber);
                 tentNumber--;
-
 //              Wait a random number of milliseconds before looping
                 int delay = 1200;
                 try {
@@ -290,12 +284,14 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             int xPosition = values[0];
-            launchObstacle(xPosition);
+            int mTentNumber = values[1];
+            launchObstacle(xPosition, mTentNumber);
+
         }
 
     }
 
-    private void launchObstacle(int x) {
+    private void launchObstacle(int x, int mTentNumber) {
         Obstacle obstacle = new Obstacle(GameScreen.this,getObstacle()
                 ,100,tent);
         int mWidth = obstacle.getWidth();
@@ -303,16 +299,18 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         obstacle.setY(0f-tent.getHeight());
         mRootLayout.addView(obstacle);
         obstacle.releaseObstacle(mScreenHeight, duration);
+        updateDisplay(mTentNumber);
     }
 
     //Just wrote this
     private String getObstacle(){
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 7);
         return mObstacles.get(randomNum);
     }
     //Just wrote this
     private ArrayList<String> findObstacles(){
         Field[] ID_Fields = R.drawable.class.getFields();
+        mObstacles = new ArrayList<String>();
         for (Field f: ID_Fields){
             try{
                 String fileName = f.getName();
@@ -330,64 +328,13 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     }
 
     public void gameOver(){
+        mSoundHelper.stopMusic();
         Intent score = new Intent(GameScreen.this,GameOver.class);
         score.putExtra("Score",mScore);
         startActivity(score);
     }
 
     //spit out a random score for sake of database testing
-    private static int giveScore(){
-        //returns score between [0, 1000]
-        Random r = new Random();
-        int randy = r.nextInt(1001);
-        return randy;
-    }
-
-    private void writeScore(int score){
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-
-        //bind values we want to insert to their respective column names
-        ContentValues values = new ContentValues();
-        values.put(LocalScoreContract.LocalScoreRecord.COLUMN_NAME_USER_ID, "" + firebaseAuth.getCurrentUser().getUid());
-        values.put(LocalScoreContract.LocalScoreRecord.COLUMN_NAME_CHARACTER, mCharacterName);
-        values.put(LocalScoreContract.LocalScoreRecord.COLUMN_NAME_SCORE, score);
-
-        Log.d("rowInserted", "" + firebaseAuth.getCurrentUser().getUid() + "| " + mCharacterName + "| " + score);
-
-        //insert new score into the ScoreRecord table
-        //this table only exists for this device
-        db.insert(LocalScoreContract.LocalScoreRecord.TABLE_NAME, null, values);
-        db.close();
-
-        //copy to Firebase database
-        //put everyone who scored the same
-        getNames(score);
-        String userID = firebaseAuth.getCurrentUser().getUid();
-        DatabaseReference currentUser = firebaseDBRoot.child("Scores").child(score + "").child(userID + "");
-        currentUser.child("characters").child(mCharacterName).setValue("True");
-    }
-
-    //sets the first and last name of the logged in user
-    //in the scores tree
-    public void getNames(int score){
-        String currentID = firebaseAuth.getCurrentUser().getUid();
-        final DatabaseReference currentUser = firebaseDBRoot.child("Users").child(currentID);
-        final DatabaseReference userScore = firebaseDBRoot.child("Scores").child(score + "").child(currentID + "");
-        //only gets called once
-        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User u = dataSnapshot.getValue(User.class);
-                userScore.child("firstName").setValue(u.firstName);
-                userScore.child("lastName").setValue(u.lastName);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("GameScreenError", "onCalledCalled", databaseError.toException());
-            }
-        });
-    }
 
     public boolean onTouch(View view, MotionEvent event) {
         switch (event.getAction()) {
