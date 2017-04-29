@@ -129,6 +129,7 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
         return result;
     }
 
+    // Customizable tent
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == PICTURE_RESULT && resultCode == Activity.RESULT_OK) {
@@ -147,7 +148,7 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
                 SharedPref.write("charName", sCharacterNames[0]);
                 SharedPref.write("charID",0);
                 startActivity(gameStart);
-            }catch (Exception e){
+            }catch (IOException e){
                 e.printStackTrace();
             }
         }

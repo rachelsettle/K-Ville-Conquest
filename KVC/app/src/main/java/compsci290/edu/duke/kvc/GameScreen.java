@@ -62,34 +62,27 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
     private int mScoreMultiplier = 1;
     private int mTentSize = 300;
     private int mTankDamageTimes = 0;
-    //private Obstacle mObstacle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        //Bao's methods
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
 
-
         findObstacles();
-
-                //points to the top of the JSON tree
-
-
 
         SharedPref.initialize(GameScreen.this.getApplicationContext());
 
         //default character is the first character
         duration = SharedPref.read("diffSettings",3000);
 
-        //Grant's methods
         mRootLayout = (ViewGroup) findViewById(R.id.root);
         tent = (ImageView) mRootLayout.findViewById(R.id.characterImage);
+
+        // Inputting the customizable tent
         if (SharedPref.read("position",1) != 0){
             tent.setImageResource(SharedPref.read("charID", CharacterSelectScreen.sCharacterIDs[0]));
         }
         else{
-            //tent.setImageBitmap();
             Intent intent = getIntent();
             byte[] bytes = intent.getByteArrayExtra("BMP");
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -99,7 +92,6 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
         tent.setLayoutParams(layoutParams);
         tent.setOnTouchListener(this);
 
-        //set background
         new backgroundSet().execute();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -183,7 +175,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
                             JSONObject data = new JSONObject(json.toString());
                             JSONObject m = data.getJSONObject("main");
                             ans = m.getDouble("temp");
-                            Log.d("WEATHER","temperature is" + ans);
+                            Log.d("WEATHER","temperature is " + ans);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -195,7 +187,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
                 } finally {
                     connection.disconnect();
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return ans;
