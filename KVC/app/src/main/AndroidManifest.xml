@@ -17,23 +17,67 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CharacterSelectScreen" />
-        <activity android:name=".GameScreen" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".Profile"/>
-        <activity android:name=".LocalHighScores" />
-        <activity android:name=".GlobalHighScores" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".VictoryScreech" />
-        <activity android:name=".GameOver" />
+
+        <activity
+            android:name=".CharacterSelectScreen"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation" />
+
+        <activity
+            android:name=".GameScreen"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".Profile"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".LocalHighScores"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".GlobalHighScores"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".VictoryScreech"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity
+            android:name=".GameOver"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.compsci290.edu.duke.kvc.fileprovider"

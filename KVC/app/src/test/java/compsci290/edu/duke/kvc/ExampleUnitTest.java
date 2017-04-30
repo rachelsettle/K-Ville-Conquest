@@ -1,7 +1,15 @@
 package compsci290.edu.duke.kvc;
 
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+
 import org.junit.Test;
 
+import java.util.HashSet;
+
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**

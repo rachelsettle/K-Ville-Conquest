@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -115,6 +117,7 @@ public class CharacterSelectScreen extends AppCompatActivity implements AdapterV
 
                 if (fileName.contains("character") && !(seenFiles.contains(fileName))){
                     seenFiles.add(fileName);
+
                     result.add(new NameIDPair(fileName,
                             CharacterSelectScreen.this.getResources().getIdentifier(fileName,
                                     "drawable",

@@ -98,7 +98,7 @@ public class GameOver extends Activity{
 
     //sets the first and last name of the logged in user
     //in the scores tree
-    public void getNames(int score){
+    private void getNames(int score){
         String currentID = firebaseAuth.getCurrentUser().getUid();
         final DatabaseReference currentUser = firebaseDBRoot.child("Users").child(currentID);
         final DatabaseReference userScore = firebaseDBRoot.child("Scores").child(score + "").child(currentID + "");

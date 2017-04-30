@@ -3,10 +3,14 @@ package compsci290.edu.duke.kvc;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +50,16 @@ public class CharacterSelectAdapter extends ArrayAdapter<String>{
         ImageView charIcon = (ImageView) rowView.findViewById(R.id.charIcon);
         TextView charName = (TextView) rowView.findViewById(R.id.charName);
 
-        charIcon.setImageResource(mIDs[position]);
+        //charIcon.setImageResource(mIDs[position]);
+
+        //Start deleting
+        Bitmap bm = BitmapFactory.decodeResource(mContext.getResources(), mIDs[position]);
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        float widthPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 175, metrics);
+        float heightPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, metrics);
+        Bitmap bmScaled = Bitmap.createScaledBitmap(bm, (int) widthPixels -150, (int) heightPixels, false);
+        charIcon.setImageBitmap(bmScaled);
+        //End deleting
 
         //need to display tent power
         String characterActualName = mNames[position];

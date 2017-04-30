@@ -55,5 +55,4 @@ public class SharedPref {
     public static int read(String tag, int defaultValue){
         return sSharedPref.getInt(tag, defaultValue);
     }
-
 }
