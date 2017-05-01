@@ -12,7 +12,7 @@
         android:layout_marginTop="465dp"
         android:layout_marginLeft="60dp"
         android:background="@drawable/letsplay"
-        android:onClick="onLoginClick"
+        android:onClick="onLetsPlayClick"
         />
 
 </LinearLayout>

@@ -61,6 +61,7 @@ public class Obstacle extends android.support.v7.widget.AppCompatImageView imple
         this.bringToFront();
         */
 
+
         this.setImageResource(obstacleTypeInt);
 
         //Sets params
