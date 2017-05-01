@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="76.5dp"
+        android:layout_height="47.8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/kvc_logo" />
+
+    <TextView
+        android:id="@+id/globalScoreInfoText"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="25sp"
+        tools:text="TOP 20 SCORES WORLDWIDE"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignStart="@+id/globalToHome" />
+
+    <ListView
+        android:id="@+id/globalScoresList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/imageView3"
+        android:layout_toEndOf="@+id/globalScoreInfoText"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/globalToHome"
+        android:background="@drawable/returnhome"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:onClick="onHomeClick"
+        android:layout_marginStart="28dp"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
