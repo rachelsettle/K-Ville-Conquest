@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:layout_width="76.5dp"
+        android:layout_height="47.8dp"
+        android:background="@drawable/kvc_logo"
+        android:id="@+id/imageView"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="21dp" />
+
+    <TextView
+        android:id="@+id/emailLogin"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Email Address"
+        android:textSize="18sp"
+        android:layout_above="@+id/emailInputLogin"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/emailInputLogin"
+        android:textColor="#FFFFFF"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textSize="18sp"
+        android:layout_above="@+id/passwordInputLogin"
+        android:layout_alignStart="@+id/emailLogin"
+        android:layout_marginBottom="33dp" />
+
+    <TextView
+        android:id="@+id/passwordLogin"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="18sp"
+        android:layout_below="@+id/emailInputLogin"
+        android:layout_alignStart="@+id/emailInputLogin" />
+
+    <EditText
+        android:id="@+id/passwordInputLogin"
+        android:textColor="#FFFFFF"
+        android:layout_width="337dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="18sp"
+        android:layout_marginBottom="68dp"
+        android:layout_above="@+id/confirmLogin"
+        android:layout_alignStart="@+id/passwordLogin" />
+
+
+    <Button
+        android:id="@+id/confirmLogin"
+        android:background="@drawable/login_white"
+        android:layout_width="273.3dp"
+        android:layout_height="75dp"
+        android:onClick="onLoginConfirm"
+        android:layout_marginBottom="31dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
