@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="76.5dp"
+        android:layout_height="47.8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/kvc_logo" />
 
     <TextView
         android:id="@+id/localScoreInfoText"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/toGlobalClick"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="11dp"
         android:text="TextView"
-        android:textSize="12sp"
-        tools:text="Top 20 Highest Scores on this Device" />
+        android:textSize="20sp"
+        tools:text="on this account"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HIGH SCORES"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        tools:text="HIGH SCORES"
+        android:layout_below="@+id/imageView3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
     <ListView
         android:id="@+id/localScoresList"
@@ -26,11 +47,12 @@
 
     <Button
         android:id="@+id/toGlobalClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+        android:background="@drawable/global"
+        android:layout_width="170dp"
+        android:layout_height="30dp"
         android:onClick="onGlobalHighScoresClick"
-        android:text="Global High Scores"
-        android:textSize="10sp" />
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="28dp"
+        android:layout_alignBottom="@+id/imageView3" />
 </RelativeLayout>

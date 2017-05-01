@@ -175,6 +175,7 @@ public class GameScreen extends AppCompatActivity implements Obstacle.ObstacleLi
                             JSONObject data = new JSONObject(json.toString());
                             JSONObject m = data.getJSONObject("main");
                             ans = m.getDouble("temp");
+                            //checking that weather API is working
                             Log.d("WEATHER","temperature is " + ans);
                         } catch (JSONException e) {
                             e.printStackTrace();

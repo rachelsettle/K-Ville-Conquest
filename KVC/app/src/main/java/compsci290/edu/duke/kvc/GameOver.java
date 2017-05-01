@@ -44,7 +44,7 @@ public class GameOver extends Activity{
         mCharacterName = SharedPref.read("charName", CharacterSelectScreen.sCharacterNames[0]);
         Bundle score = getIntent().getExtras();
         mScore = score.getInt("Score");
-        scoreDisplay = (TextView) this.findViewById(R.id.gameOverScore);
+        scoreDisplay = (TextView) this.findViewById(R.id.scoreText);
         scoreDisplay.setText(mScore + "");
         writeScore(mScore);
 

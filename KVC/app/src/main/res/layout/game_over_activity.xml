@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="140dp"
+        android:layout_above="@+id/gameOverText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/kvc_logo" />
 
     <TextView
         android:id="@+id/gameOverText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The game is over. Here is your score."
-        android:textAlignment="center" />
+        android:layout_marginLeft="78dp"
+        android:text="GAME OVER"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp" />
+
 
     <TextView
-        android:id="@+id/gameOverScore"
+        android:id="@+id/scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gameOverText"
-        android:text="I am the Score!!!"
-        />
+        android:layout_marginLeft="135dp"
+        android:text="SCORE:"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/playAgain"
-        android:layout_below="@id/gameOverScore"
-        android:text="Play Again"
-        android:onClick="playAgain"
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/backToHome"
-        android:layout_below="@id/playAgain"
-        android:text="Home"
-        android:onClick="goToHome"
-        />
-
-</RelativeLayout>
+</LinearLayout>

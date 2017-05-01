@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:layout_width="76.5dp"
+        android:layout_height="47.8dp"
+        android:background="@drawable/kvc_logo"
+        android:id="@+id/imageView"
+        android:layout_marginEnd="20dp"
+        android:layout_above="@+id/emailInputRegistration"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="11dp" />
 
     <TextView
         android:id="@+id/emailRegistration"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         android:text="Email Address"
         android:textSize="18sp"
         android:layout_alignParentTop="true"
@@ -16,6 +28,7 @@
 
     <EditText
         android:id="@+id/emailInputRegistration"
+        android:textColor="#FFFFFF"
         android:layout_width="337dp"
         android:layout_height="59dp"
         android:ems="10"
@@ -26,6 +39,7 @@
 
     <TextView
         android:id="@+id/passwordRegistration"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
@@ -35,6 +49,7 @@
 
     <EditText
         android:id="@+id/passwordInputRegistration"
+        android:textColor="#FFFFFF"
         android:layout_width="337dp"
         android:layout_height="59dp"
         android:ems="10"
@@ -42,17 +57,10 @@
         android:layout_below="@+id/passwordRegistration"
         android:layout_alignStart="@+id/passwordRegistration" />
 
-    <Button
-        android:id="@+id/confirmRegistration"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:onClick="onConfirmRegister"
-        android:text="Register"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/firstNameText"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="First Name"
@@ -63,6 +71,7 @@
 
     <EditText
         android:id="@+id/firstNameInput"
+        android:textColor="#FFFFFF"
         android:layout_width="337dp"
         android:layout_height="59dp"
         android:ems="10"
@@ -72,6 +81,7 @@
 
     <TextView
         android:id="@+id/lastNameText"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -82,10 +92,21 @@
 
     <EditText
         android:id="@+id/lastNameInput"
+        android:textColor="#FFFFFF"
         android:layout_width="337dp"
         android:layout_height="59dp"
         android:layout_alignStart="@+id/lastNameText"
         android:layout_below="@+id/lastNameText"
         android:ems="10"
         android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/confirmRegistration"
+        android:background="@drawable/register"
+        android:layout_width="273.3dp"
+        android:layout_height="75dp"
+        android:onClick="onConfirmRegister"
+        android:layout_below="@+id/lastNameInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp" />
 </RelativeLayout>

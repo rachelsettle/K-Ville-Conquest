@@ -4,21 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    >
+    android:background="@drawable/bg">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:text="Choose a Character"
-        android:fontFamily="serif"
-        android:textColor="#000000"
+        android:text="PICK YOUR TENT"
+        android:textColor="#FFFFFF"
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:layout_weight="0.82" />
+        android:layout_weight="0.16" />
     <ListView
         android:id="@+id/characterSelect"
+        android:textColor="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="427dp"
         android:layout_weight="0.34" />

@@ -62,7 +62,7 @@ public class Profile extends AppCompatActivity {
     }
 
     public void onGameStartClick(View button){
-        Intent i = new Intent(Profile.this, VictoryScreech.class);
+        Intent i = new Intent(Profile.this, InstructionScreen.class);
         startActivity(i);
     }
 

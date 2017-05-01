@@ -6,6 +6,7 @@
 
     <TextView
         android:id="@+id/playerName"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dip"
@@ -14,6 +15,7 @@
 
     <TextView
         android:id="@+id/globalScoreText"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dip"
@@ -22,6 +24,7 @@
 
     <TextView
         android:id="@+id/globalCharacerText"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dip"
