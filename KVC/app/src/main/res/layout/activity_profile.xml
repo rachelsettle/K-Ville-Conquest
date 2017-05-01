@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+
+<ImageView
+        android:layout_width="302dp"
+        android:layout_height="184dp"
+        android:background="@drawable/kvc_logo"
+        android:id="@+id/imageView"
+    android:layout_below="@+id/userName"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="21dp" />
+
+    <TextView
+        android:id="@+id/welcomeMessage"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        android:textSize="18sp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="26dp" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:textColor="#FFFFFF"
+        android:layout_width="268dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="7dp"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/welcomeMessage"
+        android:layout_alignBottom="@+id/welcomeMessage"
+        android:layout_toEndOf="@+id/welcomeMessage" />
+
+
+    <Button
+        android:id="@+id/startGame"
+        android:background="@drawable/play"
+        android:layout_width="273.3dp"
+        android:layout_height="75dp"
+
+        android:onClick="onGameStartClick"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/highScores"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:onClick="onHighScoreClick"
+        android:background="@drawable/highscores"
+        android:layout_marginBottom="22dp"
+        android:layout_above="@+id/settingsButton"
+        android:layout_centerHorizontal="true" />
+
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:onClick="onSettingsClick"
+        android:background="@drawable/settings"
+        android:layout_marginBottom="65dp"
+        android:layout_alignBottom="@+id/signOutButton"
+        android:layout_alignStart="@+id/highScores" />
+
+
+
+
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:background="@drawable/signout"
+        android:onClick="onSignOutClick"
+        android:layout_marginBottom="77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/settingsButton" />
+</RelativeLayout>
